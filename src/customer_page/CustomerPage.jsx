@@ -101,46 +101,50 @@ const CustomerPage = () => {
     });
   };
 
-  const handleAddToCart = async (product) => {
-    const username = localStorage.getItem("username");
-    const qty = quantities[product.id] || 1;
+// In your handleAddToCart function, add a callback for payment integration
+const handleAddToCart = async (product) => {
+  const username = localStorage.getItem("username");
+  const qty = quantities[product.id] || 1;
 
-    if (!username) {
-      alert("Please log in to add products to your cart.");
-      return;
+  if (!username) {
+    alert("Please log in to add products to your cart.");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:8080/addToCart", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        productId: product.id,
+        username: username,
+        quantity: qty,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to add product to cart");
+    } else {
+      alert(
+        `Product "${product.name}" (x${qty}) added to cart successfully!`
+      );
+      
+      // Reset quantity to 1 after adding to cart
+      setQuantities(prev => ({
+        ...prev,
+        [product.id]: 1
+      }));
+      
+      fetchCartItems();
+      
+      // If you want to redirect to cart page after adding
+      // navigate("/cart");
     }
-
-    try {
-      const response = await fetch("http://localhost:8080/addToCart", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          productId: product.id,
-          username: username,
-          quantity: qty,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to add product to cart");
-      } else {
-        alert(
-          `Product "${product.name}" (x${qty}) added to cart successfully!`
-        );
-        
-        // Reset quantity to 1 after adding to cart
-        setQuantities(prev => ({
-          ...prev,
-          [product.id]: 1
-        }));
-        
-        fetchCartItems();
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Something went wrong while adding to cart!");
-    }
-  };
+  } catch (error) {
+    console.error(error);
+    alert("Something went wrong while adding to cart!");
+  }
+};
 
   const getCartQuantity = (productId) => {
     const cartItem = cartItems.find(item => item.product && item.product.id === productId);

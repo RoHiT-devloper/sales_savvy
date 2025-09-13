@@ -6,11 +6,38 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [processingPayment, setProcessingPayment] = useState(false);
+  const [razorpayLoaded, setRazorpayLoaded] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchCartItems();
+    loadRazorpay();
   }, []);
+
+  // Function to load Razorpay script
+  const loadRazorpay = () => {
+    return new Promise((resolve) => {
+      if (window.Razorpay) {
+        setRazorpayLoaded(true);
+        resolve(true);
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.async = true;
+      script.onload = () => {
+        setRazorpayLoaded(true);
+        resolve(true);
+      };
+      script.onerror = () => {
+        console.error('Failed to load Razorpay script');
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
 
   const fetchCartItems = async () => {
     const username = localStorage.getItem("username");
@@ -87,8 +114,80 @@ const CartPage = () => {
     }
   };
 
-  const handleCheckout = () => {
-    alert("Proceeding to checkout! Total amount: Rs." + totalPrice);
+  const initiateRazorpayPayment = async () => {
+    // Make sure Razorpay is loaded
+    const razorpayAvailable = await loadRazorpay();
+    if (!razorpayAvailable) {
+      alert("Payment service is temporarily unavailable. Please try again later.");
+      return;
+    }
+
+    setProcessingPayment(true);
+    
+    try {
+      // For testing, use Razorpay's test credentials
+      // In production, you would get these from your backend
+      const options = {
+        key: "rzp_test_1DP5mmOlF5G5ag", // Test key from Razorpay
+        amount: Math.round(totalPrice * 100), // Amount in paise
+        currency: "INR",
+        name: "SalesSavvy Store",
+        description: "Thank you for your purchase",
+        image: "https://cdn.razorpay.com/logos/7K3b6d18wHwKzL_medium.png",
+        handler: function(response) {
+          alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
+          clearCartAfterPayment();
+        },
+        prefill: {
+          name: localStorage.getItem("username") || "Customer",
+          email: "customer@example.com",
+          contact: "9000090000"
+        },
+        notes: {
+          address: "SalesSavvy Customer"
+        },
+        theme: {
+          color: "#4285f4"
+        }
+      };
+      
+      const razorpayInstance = new window.Razorpay(options);
+      razorpayInstance.open();
+      
+      razorpayInstance.on('payment.failed', function(response) {
+        alert(`Payment failed: ${response.error.description}`);
+        setProcessingPayment(false);
+      });
+      
+    } catch (error) {
+      console.error('Error initiating payment:', error);
+      alert("Something went wrong with payment processing.");
+      setProcessingPayment(false);
+    }
+  };
+
+  const clearCartAfterPayment = async () => {
+    const username = localStorage.getItem("username");
+    if (!username) return;
+
+    try {
+      // Clear all items from cart after successful payment
+      if (cartItems.length > 0) {
+        for (const item of cartItems) {
+          await fetch(`http://localhost:8080/api/cart/remove?productId=${item.product.id}&username=${username}`, {
+            method: "DELETE",
+          });
+        }
+      }
+      
+      // Refresh cart
+      fetchCartItems();
+      alert("Order placed successfully! Your cart has been cleared.");
+    } catch (error) {
+      console.error('Error clearing cart:', error);
+    } finally {
+      setProcessingPayment(false);
+    }
   };
 
   if (loading) {
@@ -166,8 +265,16 @@ const CartPage = () => {
                 <span>Rs.{(totalPrice > 0 ? totalPrice + 50 : 0)}</span>
               </div>
               
-              <button onClick={handleCheckout} className="checkout-btn">
-                Proceed to Checkout
+              <div className="payment-info">
+                <p>🔒 Secure payment powered by Razorpay</p>
+              </div>
+              
+              <button 
+                onClick={initiateRazorpayPayment} 
+                disabled={processingPayment || !razorpayLoaded}
+                className="checkout-btn"
+              >
+                {processingPayment ? "Processing..." : "Proceed to Payment"}
               </button>
               
               <button onClick={() => navigate("/customer")} className="continue-shopping-btn">

@@ -1,0 +1,51 @@
+/* Payment.css */
+.payment-processing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.payment-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4285f4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.payment-success {
+  text-align: center;
+  padding: 30px;
+  background-color: #f0fff4;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.payment-success-icon {
+  color: #38a169;
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.payment-failed {
+  text-align: center;
+  padding: 30px;
+  background-color: #fff5f5;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.payment-failed-icon {
+  color: #e53e3e;
+  font-size: 48px;
+  margin-bottom: 15px;
+}
