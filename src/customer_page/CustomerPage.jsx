@@ -52,12 +52,11 @@ const CustomerPage = () => {
         const cartData = await response.json();
         setCartItems(cartData.items || []);
         
+        // Reset all quantities to 1 when loading the page
         const initialQuantities = {};
-        if (cartData.items) {
-          cartData.items.forEach(item => {
-            initialQuantities[item.product.id] = item.quantity;
-          });
-        }
+        products.forEach(product => {
+          initialQuantities[product.id] = 1;
+        });
         setQuantities(initialQuantities);
       }
     } catch (error) {
@@ -96,7 +95,8 @@ const CustomerPage = () => {
 
   const changeQuantity = (productId, change) => {
     setQuantities((prev) => {
-      const newQty = Math.max((prev[productId] || 1) + change, 1);
+      const currentQty = prev[productId] || 1;
+      const newQty = Math.max(currentQty + change, 1);
       return { ...prev, [productId]: newQty };
     });
   };
@@ -127,6 +127,13 @@ const CustomerPage = () => {
         alert(
           `Product "${product.name}" (x${qty}) added to cart successfully!`
         );
+        
+        // Reset quantity to 1 after adding to cart
+        setQuantities(prev => ({
+          ...prev,
+          [product.id]: 1
+        }));
+        
         fetchCartItems();
       }
     } catch (error) {
