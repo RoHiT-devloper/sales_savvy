@@ -1,0 +1,51 @@
+/* User Management Page Styles */
+.user-management-container {
+  max-width: 500px;
+  margin: 80px auto;
+  padding: 30px;
+  border-radius: 12px;
+  background: #f9fafc;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.user-management-container h2 {
+  margin-bottom: 25px;
+  font-size: 28px;
+  color: #333;
+}
+
+.user-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-links li {
+  margin: 15px 0;
+}
+
+.user-link {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+  background: #4a90e2;
+  transition: all 0.3s ease;
+}
+
+.user-link:hover {
+  background: #357ab7;
+}
+
+.user-link.delete {
+  background: #e74c3c;
+}
+
+.user-link.delete:hover {
+  background: #c0392b;
+}
