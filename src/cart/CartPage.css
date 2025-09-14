@@ -272,3 +272,10 @@
     margin-right: 15px;
   }
 }
+
+/* In each page's CSS file, add: */
+.page-container {
+  padding: 20px;
+  margin-top: 60px; /* Height of the header */
+  min-height: calc(100vh - 60px);
+}

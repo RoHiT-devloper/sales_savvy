@@ -13,13 +13,19 @@ import Search_Product from './productmanager/Search_Product';
 import Product_Manager from './admin/Product_Manager';
 import Admin_home from './admin/Admin_Home';
 import Delete_User from './user/Delete_User';
+import Header from './header/header';
 import './App.css';
 import User_Management from './user/User_Management';
 import CartPage from './cart/CartPage';
 
 function App() {
+  
   return (
     <div className="app">
+      {/* Show header on all pages except Welcome, SignIn, and SignUp */}
+      {!['/', '/signin', '/signup'].includes(window.location.pathname) && <Header />}
+      
+      <div className="app-content">
       <Routes>
         <Route path="/" element={<Welcome />} />
         <Route path="/signin" element={<Sign_in />} />
@@ -28,6 +34,7 @@ function App() {
         <Route path="/addProduct" element={<Add_Product />} />
         <Route path="/deleteProduct" element={<Delete_Product />} />
         <Route path="/searchProduct" element={<Search_Product />} />
+        
         <Route path="/updateProduct" element={<Update_Product />} />
         <Route path="/show-users" element={<View_User />} />
         <Route path="/productManager" element={<Product_Manager />} />
@@ -38,6 +45,7 @@ function App() {
         <Route path="/admin" element={<Admin_home />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+    </div>
     </div>
   );
 }

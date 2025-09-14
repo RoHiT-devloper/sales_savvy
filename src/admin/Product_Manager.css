@@ -54,3 +54,9 @@
   color: #ffffff;
   border-color: #2b6cb0;
 }
+/* In each page's CSS file, add: */
+.page-container {
+  padding: 20px;
+  margin-top: 60px; /* Height of the header */
+  min-height: calc(100vh - 60px);
+}
