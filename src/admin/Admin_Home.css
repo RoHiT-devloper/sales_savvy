@@ -232,7 +232,9 @@
     .admin-card-icon {
         font-size: 2.5rem;
     }
-}/* In each page's CSS file, add: */
+}
+
+/* In each page's CSS file, add: */
 .page-container {
   padding: 20px;
   margin-top: 60px; /* Height of the header */
