@@ -221,7 +221,7 @@ const CartPage = () => {
                 <div className="item-details">
                   <h3 className="item-name">{item.product.name}</h3>
                   <p className="item-category">{item.product.category}</p>
-                  <p className="item-price">Rs.{item.product.price} each</p>
+                  <p className="item-price">Rs. {item.product.price} each</p>
                   <p className="item-description">{item.product.description}</p>
                 </div>
                 
