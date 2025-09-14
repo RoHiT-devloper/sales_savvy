@@ -45,18 +45,16 @@ const SignIn = () => {
       const result = await response.json();
 
           if (response.ok) {
-      if (result.message === "admin") {
-        localStorage.setItem("username", formData.username);
-        localStorage.setItem("role", "admin");
-        navigate("/admin");
-      } else if (result.message === "customer") {
-        localStorage.setItem("username", formData.username);
-        localStorage.setItem("role", "customer");
-        // ✅ Pass products list
-        navigate("/customer", { state: { products: result.products } });
-      } else {
-        setError(result.message);
-      }
+          // In your SignIn component, update the success handler:
+          if (result.message === "admin") {
+            localStorage.setItem("username", formData.username);
+            localStorage.setItem("role", "admin");
+            navigate("/admin");
+          } else if (result.message === "customer") {
+            localStorage.setItem("username", formData.username);
+            localStorage.setItem("role", "customer");
+            navigate("/customer", { state: { products: result.products } });
+          }
     }
  else {
         setError(result.message || "Something went wrong");
