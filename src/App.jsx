@@ -24,7 +24,7 @@ function App() {
   return (
     <div className="app">
       {/* Show header on all pages except Welcome, SignIn, SignUp, and AccessDenied */}
-      {!['/', '/signin', '/signup', '/access-denied'].includes(window.location.pathname) && <Header />}
+     {!['/', '/signin', '/signup', '/access-denied'].includes(window.location.pathname) && <Header />} 
       
       <div className="app-content">
         <Routes>

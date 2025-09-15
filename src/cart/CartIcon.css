@@ -1,6 +1,6 @@
 .cart-icon-container {
   position: fixed;
-  top: 20px;
+  top: 68px; /* Changed from 20px to 96px (20px + 76px for 2cm) */
   right: 20px;
   z-index: 1000;
   cursor: pointer;
@@ -47,7 +47,7 @@
   .cart-icon-container {
     width: 50px;
     height: 50px;
-    top: 15px;
+    top: 90px; /* Changed from 15px to 90px (15px + 76px for 2cm) */
     right: 15px;
   }
   
