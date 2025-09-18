@@ -121,7 +121,10 @@ const SignIn = () => {
               <input type="checkbox" />
               <span>Remember me</span>
             </label>
-            <a href="#forgot" className="forgot-password">Forgot password?</a>
+
+            <p>
+              <Link to="/forgot-password" className="auth-link">Forgot Password?</Link>
+            </p>
           </div>
 
           <button 

@@ -199,3 +199,42 @@
     gap: 10px;
   }
 }
+
+/* Add to existing Auth.css */
+.otp-input-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.otp-input {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  font-size: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 0 5px;
+}
+
+.otp-input:focus {
+  border-color: #4285f4;
+  outline: none;
+}
+
+.password-strength {
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+.strength-weak {
+  color: #ff4757;
+}
+
+.strength-medium {
+  color: #ffa502;
+}
+
+.strength-strong {
+  color: #2ed573;
+}

@@ -19,6 +19,7 @@ import CartPage from './cart/CartPage';
 import ProtectedRoute from './utils/ProtectedRoute';
 import AccessDenied from './pages/AccessDenied';
 import './App.css';
+import ForgotPassword from './forgotpassword/ForgotPassword';
 
 function App() {
   return (
@@ -33,7 +34,8 @@ function App() {
           <Route path="/signin" element={<Sign_in />} />
           <Route path="/signup" element={<Sign_up />} />
           <Route path="/access-denied" element={<AccessDenied />} />
-          
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+
           {/* Customer Routes - Protected */}
           <Route 
             path="/customer" 
